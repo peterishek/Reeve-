@@ -1,10 +1,15 @@
 
 import os
+import sys
 import django
 from django.core.management import call_command
 
+# Add your project directory (e.g., 'core' or whatever your inner folder is named) to Python's path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
+
 
 def run_setup():
     print("🚀 Starting automated database initialization...")
