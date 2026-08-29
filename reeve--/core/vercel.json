@@ -6,7 +6,7 @@
             "config": { "maxLambdaSize": "15mb" }
         }
     ],
-    "buildCommand": "pip install -r requirements.txt && python migrate.py",
+    "buildCommand": "pip install -r requirements.txt && TURSO_DATABASE_URL=$TURSO_DATABASE_URL TURSO_AUTH_TOKEN=$TURSO_AUTH_TOKEN python migrate.py",
     "routes": [
         {
             "src": "/(.*)",
