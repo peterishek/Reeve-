@@ -126,18 +126,16 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT', '6543'),
     }
 }
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'postgres',
-#         'USER': 'postgres.fzdyjdfpcrvtrnyrenem',
-#         'PASSWORD': 'tumwuz-wenkez-4jyvqU',
-#         'HOST': 'aws-1-eu-west-1.pooler.supabase.com',
-#         'PORT': '6543',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres.fzdyjdfpcrvtrnyrenem',
+        'PASSWORD': 'tumwuz-wenkez-4jyvqU',
+        'HOST': 'aws-1-eu-west-1.pooler.supabase.com',
+        'PORT': '6543',
+    }
+}
 
 
 
