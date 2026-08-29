@@ -51,10 +51,13 @@ TEMPLATES = [
     },
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:5173", "*"
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://localhost:5173", "*"
+# ]
+
+
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
@@ -91,8 +94,11 @@ DATABASES = {
         # CRUCIAL FOR SERVERLESS NETWORKS: Keep connections open for 10 minutes (600 seconds)
         # This reduces connection overhead and speeds up response times significantly.
         'CONN_MAX_AGE': 600, 
+        
     }
 }
+
+
 
 
 AUTH_PASSWORD_VALIDATORS = [

@@ -6,4 +6,5 @@ weasyprint>=62.0
 psycopg2-binary>=2.9
 requests
 reportlab
-django-libsql-backend
+django-libsql_backend
+django-libsql

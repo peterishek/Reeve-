@@ -15,6 +15,8 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
+
+
 # Execute database migrations and superuser setup instantly upon container spin-up
 application = get_wsgi_application()
 app = application
