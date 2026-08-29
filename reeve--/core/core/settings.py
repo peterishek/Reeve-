@@ -99,19 +99,34 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # }
 import os
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('DB_NAME', 'Reeve'),
+#         'USER': os.environ.get('DB_USER', 'postgres.fzdyjdfpcrvtrnyrenem'),
+#         'PASSWORD': os.environ.get('tumwuz-wenkez-4jyvqU'),
+#         'HOST': os.environ.get('aws-1-eu-west-1.pooler.supabase.com'),
+#         'PORT': os.environ.get('DB_PORT', '6543'),
+#         'OPTIONS': {
+#             'sslmode': 'require',
+#         },
+#     }
+# }
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'Reeve'),
-        'USER': os.environ.get('DB_USER', 'postgres.fzdyjdfpcrvtrnyrenem'),
-        'PASSWORD': os.environ.get('tumwuz-wenkez-4jyvqU'),
-        'HOST': os.environ.get('aws-1-eu-west-1.pooler.supabase.com'),
-        'PORT': os.environ.get('DB_PORT', '6543'),
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+        'OPTIONS': {'sslmode': 'require'},
+        'CONN_MAX_AGE': 600,
     }
 }
+
 
 
 
