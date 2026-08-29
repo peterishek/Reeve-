@@ -74,10 +74,23 @@ SIMPLE_JWT = {
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+import os
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django_libsql',
+        'NAME': os.environ.get("TURSO_DATABASE_URL"),
+        'AUTH_TOKEN': os.environ.get("TURSO_AUTH_TOKEN"),
+        # CRUCIAL FOR SERVERLESS NETWORKS: Keep connections open for 10 minutes (600 seconds)
+        # This reduces connection overhead and speeds up response times significantly.
+        'CONN_MAX_AGE': 600, 
     }
 }
 

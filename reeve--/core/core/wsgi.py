@@ -13,5 +13,12 @@ from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
+# Execute database migrations and superuser setup instantly upon container spin-up
+try:
+    import migrate
+    migrate.run_setup()
+except Exception as e:
+    print(f"❌ Migration script failed: {e}")
+
 application = get_wsgi_application()
 app = application
