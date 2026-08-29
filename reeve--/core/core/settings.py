@@ -113,21 +113,31 @@ import os
 #     }
 # }
 
+import os
+from pathlib import Path
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-        'OPTIONS': {'sslmode': 'require'},
-        'CONN_MAX_AGE': 600,
+        'NAME': os.environ.get('DB_NAME', 'postgres'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', '6543'),
     }
 }
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres.fzdyjdfpcrvtrnyrenem',
+#         'PASSWORD': 'tumwuz-wenkez-4jyvqU',
+#         'HOST': 'aws-1-eu-west-1.pooler.supabase.com',
+#         'PORT': '6543',
+#     }
+# }
 
 
 
