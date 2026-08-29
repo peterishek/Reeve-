@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8">
+<style>
+  @page { 
+    size: A4; 
+    margin: 1.5cm; 
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body { 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    color: #12182B; 
+    font-size: 10px; 
+    line-height: 1.4;
+    background: #FFFFFF;
+  }
+
+  /* Layout Wrapper */
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header { 
+    display: table;
+    width: 100%;
+    border-bottom: 2px solid #12182B; 
+    padding-bottom: 20px; 
+    margin-bottom: 24px; 
+  }
+  .header-left, .header-right {
+    display: table-cell;
+    vertical-align: bottom;
+  }
+  .header-right {
+    text-align: right;
+  }
+  .logo { 
+    font-size: 26px; 
+    font-weight: 800; 
+    color: #12182B; 
+    letter-spacing: -0.03em;
+  }
+  .document-title {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #5C6478;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .meta-item { 
+    font-size: 10px; 
+    color: #5C6478; 
+    margin-bottom: 2px;
+  }
+  .meta-item strong {
+    color: #12182B;
+    font-weight: 600;
+  }
+
+  /* Summary Grid */
+  .summary { 
+    display: table;
+    width: 100%;
+    background: #F0EEE6; 
+    border-radius: 6px; 
+    margin-bottom: 24px; 
+    table-layout: fixed;
+  }
+  .summary-col { 
+    display: table-cell;
+    padding: 16px;
+    text-align: left; 
+    border-right: 1px solid #E7E4D8;
+    vertical-align: middle;
+  }
+  .summary-col:last-child {
+    border-right: none;
+  }
+  .summary .label { 
+    font-size: 8px; 
+    text-transform: uppercase; 
+    color: #5C6478; 
+    letter-spacing: 0.08em; 
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .summary .value { 
+    font-size: 14px; 
+    font-weight: 700; 
+    color: #12182B;
+    white-space: nowrap;
+  }
+
+  /* Table */
+  table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-bottom: 32px;
+  }
+  th { 
+    text-align: left; 
+    font-size: 8px; 
+    text-transform: uppercase; 
+    color: #5C6478; 
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    border-bottom: 1.5px solid #12182B; 
+    padding: 10px 8px; 
+  }
+  td { 
+    padding: 10px 8px; 
+    border-bottom: 1px solid #F0EEE6; 
+    font-size: 10px;
+    vertical-align: middle;
+  }
+  tr:nth-child(even) td {
+    background-color: #FAFAFA;
+  }
+  
+  /* Table Alignment & Typography */
+  .col-date { width: 18%; font-variant-numeric: tabular-nums; color: #5C6478; }
+  .col-desc { width: 37%; font-weight: 500; }
+  .col-dir { width: 12%; font-size: 9px; font-weight: 600; text-transform: uppercase; }
+  .col-amount { width: 16%; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .col-balance { width: 17%; text-align: right; font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  th.num-col, td.num-col { text-align: right; }
+  
+  /* Transaction States */
+  .credit { color: #1B8A5A; }
+  .debit { color: #12182B; }
+  .empty-row {
+    text-align: center;
+    color: #5C6478;
+    padding: 24px 8px;
+    font-style: italic;
+  }
+
+  /* Footer */
+  .footer { 
+    border-top: 1px solid #E7E4D8;
+    padding-top: 16px;
+    font-size: 8px; 
+    color: #5C6478; 
+    text-align: center; 
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-left">
+        <div class="logo">Reeve</div>
+        <div class="document-title">Account Statement</div>
+      </div>
+      <div class="header-right">
+        <div class="meta-item">Holder: <strong>{{ user.get_full_name }}</strong></div>
+        <div class="meta-item">Account: <strong>{{ account.get_account_type_display }}</strong></div>
+        <div class="meta-item">Generated: {{ generated_at|date:"d M Y, H:i" }}</div>
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="summary-col">
+        <div class="label">Statement Period</div>
+        <div class="value">
+          {% if period_from %}{{ period_from|date:"d M Y" }} – {{ period_to|date:"d M Y" }}{% else %}No entries{% endif %}
+        </div>
+      </div>
+      <div class="summary-col">
+        <div class="label">Currency</div>
+        <div class="value">{{ statement_currency }}</div>
+      </div>
+      <div class="summary-col">
+        <div class="label">Current Balance</div>
+        <div class="value">{{ account.currency }} {{ account.balance }}</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th class="col-date">Date &amp; Time</th>
+          <th class="col-desc">Description</th>
+          <th class="col-dir">Type</th>
+          <th class="col-amount num-col">Amount</th>
+          <th class="col-balance num-col">Ending Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in entries %}
+        <tr>
+          <td class="col-date">{{ entry.created_at|date:"d M Y, H:i" }}</td>
+          <td class="col-desc">{{ entry.transaction.description|default:"Transfer" }}</td>
+          <td class="col-dir {{ entry.direction }}">{{ entry.direction|title }}</td>
+          <td class="col-amount {{ entry.direction }}">{{ entry.currency }} {{ entry.amount }}</td>
+          <td class="col-balance num-col">{{ entry.currency }} {{ entry.balance_after }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="empty-row">No transactions recorded for this period/currency.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="footer">
+      Reeve Bank &bull; This statement is system-generated and does not require a physical signature.<br>
+      Fictional financial institution &bull; For portfolio display purposes only.
+    </div>
+  </div>
+</body>
+</html>

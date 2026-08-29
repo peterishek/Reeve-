@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reeve</title>
+  
+  <!-- Tailwind CSS & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- React, ReactDOM & Babel -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-[#FAF9F6] text-[#12182B] antialiased">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // --- Fonts Component ---
+    function Fonts() {
+      return (
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+          
+          .f-display { font-family: 'Playfair Display', Georgia, serif; }
+          .f-body { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+        `}</style>
+      );
+    }
+
+    // --- Color Palette ---
+    const c = {
+      ink: '#12182B',
+      slate: '#4A5568',
+      cobalt: '#2F4FE0',
+      cream: '#FAF9F6',
+      cardBg: '#FFFFFF',
+      border: '#E2E8F0',
+      softBg: '#F1F5F9'
+    };
+
+    // --- Lucide Icon Helper ---
+    function Icon({ name, className = "w-5 h-5", style = {} }) {
+      const spanRef = useRef(null);
+
+      useEffect(() => {
+        if (spanRef.current && window.lucide) {
+          const pascalName = name
+            .split('-')
+            .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+            .join('');
+          
+          const iconData = window.lucide.icons[pascalName] || window.lucide.icons[name];
+          if (iconData) {
+            const svgNode = window.lucide.createElement(iconData);
+            if (className) svgNode.setAttribute('class', className);
+            spanRef.current.innerHTML = svgNode.outerHTML;
+          }
+        }
+      }, [name, className]);
+
+      return <span ref={spanRef} className="inline-flex items-center justify-center" style={style} />;
+    }
+
+    // --- Navigation Bar ---
+    function NavBar({ setView }) {
+      return (
+        <nav className="w-full border-b px-6 py-4 flex items-center justify-between max-w-7xl mx-auto" style={{ borderColor: c.border }}>
+          <div 
+            onClick={() => setView('landing')} 
+            className="flex items-center gap-2 cursor-pointer select-none"
+          >
+            <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white text-lg f-display" style={{ backgroundColor: c.ink }}>
+              R
+            </div>
+            <span className="f-display font-bold text-xl tracking-tight" style={{ color: c.ink }}>Reeve</span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setView('signin')} 
+              className="f-body text-sm font-semibold px-4 py-2 rounded-full transition-colors hover:bg-slate-100"
+              style={{ color: c.ink }}
+            >
+              Sign in
+            </button>
+            <button 
+              onClick={() => setView('signup')} 
+              className="f-body text-sm font-semibold px-5 py-2.5 rounded-full text-white transition-opacity hover:opacity-90"
+              style={{ backgroundColor: c.cobalt }}
+            >
+              Get started
+            </button>
+          </div>
+        </nav>
+      );
+    }
+
+    // --- Landing View ---
+    function Landing({ setView }) {
+      return (
+        <main className="max-w-7xl mx-auto px-6 py-16 flex flex-col items-center text-center">
+          <span className="f-body text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-6" style={{ backgroundColor: c.softBg, color: c.cobalt }}>
+            Next-Gen Personal Ledger
+          </span>
+          
+          <h1 className="f-display text-4xl sm:text-6xl font-bold max-w-3xl leading-tight mb-6" style={{ color: c.ink }}>
+            Clear balance, quiet mind. Everything right where you expect it.
+          </h1>
+
+          <p className="f-body text-lg max-w-xl mb-8" style={{ color: c.slate }}>
+            Modern double-entry banking designed with precision, speed, and complete clarity for your modern financial workflow.
+          </p>
+
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setView('signup')} 
+              className="f-body text-base font-semibold px-8 py-3.5 rounded-full text-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+              style={{ backgroundColor: c.cobalt }}
+            >
+              Open an account
+            </button>
+            <button 
+              onClick={() => setView('signin')} 
+              className="f-body text-base font-semibold px-8 py-3.5 rounded-full border transition-all hover:bg-white"
+              style={{ borderColor: c.border, color: c.ink }}
+            >
+              Sign in
+            </button>
+          </div>
+        </main>
+      );
+    }
+
+    // --- Auth Layout Wrapper ---
+    function AuthShell({ children, setView, quote }) {
+      return (
+        <div className="min-h-[calc(100vh-73px)] flex items-center justify-center p-6">
+          <div className="w-full max-w-md bg-white rounded-2xl border p-8 shadow-sm" style={{ borderColor: c.border }}>
+            {children}
+          </div>
+        </div>
+      );
+    }
+
+    // --- Form Field Helper ---
+    function Field({ label, type = "text", value, onChange, show, toggleShow }) {
+      const isPassword = type === "password";
+
+      return (
+        <label className="block mb-4">
+          <span className="f-body text-xs font-semibold uppercase tracking-wider block mb-1.5" style={{ color: c.slate }}>
+            {label}
+          </span>
+          <div className="relative flex items-center">
+            <input 
+              type={isPassword ? (show ? "text" : "password") : type}
+              value={value}
+              onChange={onChange}
+              className="w-full px-4 py-2.5 rounded-lg border f-body text-sm outline-none transition-all focus:border-indigo-500"
+              style={{ borderColor: c.border, backgroundColor: c.cream }}
+              required
+            />
+            {isPassword && (
+              <button 
+                type="button" 
+                onClick={toggleShow} 
+                className="absolute right-3 text-gray-500 hover:text-gray-700"
+              >
+                <Icon name={show ? "eye-off" : "eye"} className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        </label>
+      );
+    }
+
+    // --- Sign In View ---
+    function SignIn({ setView }) {
+      const [email, setEmail] = useState('');
+      const [password, setPassword] = useState('');
+      const [showPass, setShowPass] = useState(false);
+
+      return (
+        <AuthShell setView={setView}>
+          <h2 className="f-display text-2xl font-bold mb-2" style={{ color: c.ink }}>Welcome back</h2>
+          <p className="f-body text-sm mb-6" style={{ color: c.slate }}>Sign in to access your Reeve account.</p>
+
+          <form onSubmit={(e) => { e.preventDefault(); alert("Signed in!"); }}>
+            <Field label="Email address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Field label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} show={showPass} toggleShow={() => setShowPass(!showPass)} />
+            
+            <button type="submit" className="w-full mt-2 py-3 rounded-full f-body text-sm font-semibold text-white transition-opacity hover:opacity-90" style={{ backgroundColor: c.ink }}>
+              Sign in
+            </button>
+          </form>
+
+          <p className="f-body text-xs mt-6 text-center" style={{ color: c.slate }}>
+            Don't have an account?{' '}
+            <button onClick={() => setView('signup')} className="font-semibold underline" style={{ color: c.cobalt }}>
+              Open one now
+            </button>
+          </p>
+        </AuthShell>
+      );
+    }
+
+    // --- Sign Up View ---
+    function SignUp({ setView }) {
+      const [fullName, setFullName] = useState('');
+      const [email, setEmail] = useState('');
+      const [password, setPassword] = useState('');
+      const [showPass, setShowPass] = useState(false);
+
+      return (
+        <AuthShell setView={setView}>
+          <h2 className="f-display text-2xl font-bold mb-2" style={{ color: c.ink }}>Get started</h2>
+          <p className="f-body text-sm mb-6" style={{ color: c.slate }}>Open your Reeve account in minutes.</p>
+
+          <form onSubmit={(e) => { e.preventDefault(); alert("Account created!"); }}>
+            <Field label="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+            <Field label="Email address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Field label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} show={showPass} toggleShow={() => setShowPass(!showPass)} />
+
+            <button type="submit" className="w-full mt-2 py-3 rounded-full f-body text-sm font-semibold text-white transition-opacity hover:opacity-90" style={{ backgroundColor: c.cobalt }}>
+              Create account
+            </button>
+          </form>
+
+          <p className="f-body text-xs mt-6 text-center" style={{ color: c.slate }}>
+            Already have an account?{' '}
+            <button onClick={() => setView('signin')} className="font-semibold underline" style={{ color: c.cobalt }}>
+              Sign in
+            </button>
+          </p>
+        </AuthShell>
+      );
+    }
+
+    // --- Main App Component ---
+    function App() {
+      const [view, setView] = useState('landing');
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          <Fonts />
+          <NavBar setView={setView} />
+          {view === 'landing' && <Landing setView={setView} />}
+          {view === 'signin' && <SignIn setView={setView} />}
+          {view === 'signup' && <SignUp setView={setView} />}
+        </div>
+      );
+    }
+
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+    root.render(<App />);
+  </script>
+</body>
+</html>
