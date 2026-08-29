@@ -6,7 +6,7 @@
             "config": { "maxLambdaSize": "15mb" }
         }
     ],
-    "buildCommand": "python migrate.py",
+    "buildCommand": "pip install -r requirements.txt && python migrate.py",
     "routes": [
         {
             "src": "/(.*)",
