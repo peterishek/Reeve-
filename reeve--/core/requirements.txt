@@ -8,3 +8,6 @@ requests
 reportlab
 django-libsql_backend
 django-libsql
+psycopg2
+psycopg[binary]
+psycopg

@@ -84,20 +84,34 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
+# import os
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django_libsql',
+#         'NAME': os.environ.get("TURSO_DATABASE_URL"),
+#         'AUTH_TOKEN': os.environ.get("TURSO_AUTH_TOKEN"),
+#         # CRUCIAL FOR SERVERLESS NETWORKS: Keep connections open for 10 minutes (600 seconds)
+#         # This reduces connection overhead and speeds up response times significantly.
+#         'CONN_MAX_AGE': 600, 
+        
+#     }
+# }
 import os
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django_libsql',
-        'NAME': os.environ.get("TURSO_DATABASE_URL"),
-        'AUTH_TOKEN': os.environ.get("TURSO_AUTH_TOKEN"),
-        # CRUCIAL FOR SERVERLESS NETWORKS: Keep connections open for 10 minutes (600 seconds)
-        # This reduces connection overhead and speeds up response times significantly.
-        'CONN_MAX_AGE': 600, 
-        
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'Reeve'),
+        'USER': os.environ.get('DB_USER', 'postgres.fzdyjdfpcrvtrnyrenem'),
+        'PASSWORD': os.environ.get('tumwuz-wenkez-4jyvqU'),
+        'HOST': os.environ.get('aws-1-eu-west-1.pooler.supabase.com'),
+        'PORT': os.environ.get('DB_PORT', '6543'),
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
-
 
 
 
