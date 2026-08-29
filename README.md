@@ -20,5 +20,5 @@
 - GET `/api/institution/ledger/` — staff only
 
 ## Frontend next step
-`reeve-frontend App.jsx` needs to become a real Vite (or Next.js) project, with its
+`frontend App.jsx` needs to become a real Vite (or Next.js) project, with its
 components split out and fetch calls added hitting the endpoints above.
