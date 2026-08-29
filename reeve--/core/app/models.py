@@ -1,3 +1,4 @@
+from decimal import Decimal
 import uuid
 from django.db import models
 from django.conf import settings
@@ -182,7 +183,7 @@ class Transaction(models.Model):
     to_account_resolved = models.ForeignKey(Account, on_delete=models.SET_NULL, related_name='received_transactions', null=True, blank=True)
 
     transfer_type = models.CharField(max_length=15, choices=TRANSFER_TYPE, default='local')
-    amount = models.DecimalField(max_digits=18, decimal_places=2, validators=[MinValueValidator(0.01)])
+    amount = models.DecimalField(max_digits=18, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     description = models.CharField(max_length=255, blank=True)
     status = models.CharField(max_length=12, choices=STATUS, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
